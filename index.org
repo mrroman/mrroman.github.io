@@ -1,0 +1,7 @@
+#+TITLE: mrroman's blog
+#+HTML_DOCTYPE: html5
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/style.css">
+#+OPTIONS: toc:nil num:nil author:nil timestamp:nil html-style:nil
+
+* Posts
+** [[./posts/2016/02/09/blog_engine.org][Blog engine version 0.1]]
