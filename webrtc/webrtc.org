@@ -1,0 +1,177 @@
+#+INFO: eval:t
+#+OPTIONS: toc:nil reveal_progress:t num:nil timestamp:nil author:nil
+#+TITLE: WebRTC
+#+REVEAL_PLUGINS: (highlight)
+
+* General
+  #+ATTR_REVEAL: :frag (appear)
+  * Wikipedia:
+   #+BEGIN_QUOTE
+   ...is a collection of communications protocols and application programming
+   interfaces that enable real-time communication over peer-to-peer connections.
+   #+END_QUOTE
+  * Developed by Google
+  * Supports audio/video and data communication (chats)
+* Concepts
+  #+ATTR_REVEAL: :frag (appear)
+  * _Peer to peer_
+
+    Data transfer takes place only between two parties.
+  * _Signalling_
+
+    Process of sending control information between the parties to determine communication protocols, channels, media codecs, etc.
+** Peer to peer
+   Interactive Connectivity Establishment (ICE)
+   * framework to allow browser to connect with peers
+   * needs to bypass firewalls
+   * relays connection through server if router doesn't allow direct connection
+** ICE
+   #+ATTR_REVEAL: :frag (appear)
+   * Session Description Protocol
+     - standard for describing the media content connection, resolution, formats, etc.
+   * Session Traversal Utilities for NAT (STUN).
+     - discover your public address and determine restrictions in your router
+     - not applicable with "Symetric NAT"
+   * Traversal Using Relays around NAT (TURN)
+     - bypass symetric NAT (both parties behind NAT)
+     - data is relayed by the TURN server
+* Signalling channel
+** Protocol
+   * Properitary protocol. Developer chooses or designs protocol
+   * Most common is SIP protocol (https://en.wikipedia.org/wiki/Session_Initiation_Protocol)
+   * Must allow to pass messages between peers:
+     - offer
+     - answer
+     - ice-candidate
+** Messages
+   #+ATTR_REVEAL: :frag (appear)
+   * _offer_ - Alice offers a call to Bob. It contains SDP message with the connection details.
+   * _answer_ - Bob answers Alice with his connection details (SDP)
+   * _ice-candidate_ - browser negotiates connection method by sending possible SDPs
+* Communication
+** Keywords
+   * lossy
+   * UDP based
+   * supports message and multimedia streams
+** Messages
+   * message - text or binary
+   * uses SCTP (Stream Control Transmission Protocol) protocol
+   * _watch for upper limit of size of message_
+** Multimedia streams
+   * video/audio (VP8)
+   * SRTP/RTCP protocol
+   * support content negotiation, quality changes, etc.
+** WebRTC gateways
+   * connection between WebRTC and other VoIP technologies
+   * e.g. allows to call PSTN terminals
+   * https://en.wikipedia.org/wiki/WebRTC_Gateway
+* Browser API
+** Interfaces
+   * WebRTC
+     * RTCPeerConnection
+     * RTCConfiguration
+     * RTCDataChannel
+     * RTCSessionDescription (SDP)
+   * Multimedia
+     * MediaDevices.getUserMedia()
+     * MediaStream
+     * MediaStreamTrack
+** Create connection
+   #+BEGIN_SRC javascript
+     const peerConnection = new RTCPeerConnection(/* config object */);
+   #+END_SRC
+** Call offer
+   Application creates an offer of a connection, sets it as a local description
+   and sends it with signalling to the target party.
+   #+BEGIN_SRC javascript
+     peerConnection.createOffer()
+         .then(function(offer) {
+             return peerConnection.setLocalDescription(offer);
+         })
+         .then(function(offer) {
+             signalling(me: me,
+                 target: whoAmICalling,
+                 type: 'offer',
+                 sdp: peerConnection.localDescription
+             });
+         })
+         .catch(function(error) {
+             //
+         });
+   #+END_SRC
+** Call answer
+   Application receives from signalling an offer, sets it as a remote description,
+   creates an answer to the offer and sends to the caller.
+   #+BEGIN_SRC javascript
+     function (offerMessage) {
+         peerConnection.setRemoteDescription(offerMessage.sdp)
+             .then(function() {
+                 return peerConnection.createAnswer();
+             })
+             .then(function(answer) {
+                 return peerConnection.setLocalDescription(answer);
+             })
+             .then(function() {
+                 signaling({
+                     name: me,
+                     target: offerMessage.name,
+                     type: 'answer',
+                     sdp: peerConnection.localDescription
+                 });
+             })
+             .catch(function(error) {
+                 //
+             });
+     }
+   #+END_SRC
+** Negotiating connection method
+   Application exchanges information about the network connections.
+   #+BEGIN_SRC javascript
+     peerConnection.addEventListener('icecandidate', function(candidate) {
+         sendToServer({
+             target: theOtherParty,
+             type: 'new-ice-candidate',
+             candidate: candidate
+         });
+     });
+
+     function newIceCandidate(candidate) {
+         peerConnection.addIceCandidate(candidate)
+             .catch(function(error) {
+                 //
+             });
+     }
+   #+END_SRC
+** Workshop
+   [[workshop/][Link]]
+** Libraries
+   * https://github.com/feross/simple-peer
+   * http://peerjs.com/
+** Debugging
+  chrome://webrtc-internals
+* Security
+** Design
+   * WebRTC is built to be secure
+   * Control channels are encrypted (DTLS)
+   * Media channels are encrypted (SRTP)
+** Weaknesses
+   * Signalling (MiTM)
+   * ICE
+   * Media channels
+   * Browser (XSS, SOP)
+** Signalling
+   * Unverified peer identity
+   * SIP protocol vulnerabilities
+   * Unencrypt communication
+** ICE
+   * NAT hole punching
+   * IP Location privacy
+** Media channels
+   * SRTP unencrypted headers
+   * SDES plain text keys and security parameters
+** Studies
+   * https://telecom.altanai.com/2015/04/24/webrtc-security/
+   * http://webrtc-security.github.io/
+* Applications
+  * https://appear.in/
+  * https://webtorrent.io/

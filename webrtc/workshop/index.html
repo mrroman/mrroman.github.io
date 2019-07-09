@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen" />
+        <script type="text/javascript" src="js/main.js"></script>
+    </head>
+    <body>
+        <div class="toolbar">
+            <button onclick="app.createOffer()">Create offer</button>
+            <button onclick="app.createAnswer()">Create answer</button>
+            <button onclick="app.acceptAnswer()">Accept answer</button>
+            <button onclick="app.acceptCandidates()">Accept ICE candidates</button>
+            <button onclick="app.createDataChannel()">Create data channel</button>
+            <button onclick="app.addCameraStream()">Add camera stream</button>
+        </div>
+        <div class="eventbar">
+            <span id="event"></span>
+        </div>
+        <div class="statusbar">
+            Connection status: <span id="status">-</span>
+            Signaling status: <span id="signaling-status">-</span>
+        </div>
+        <div class="container">
+            <div class="main-col">
+                <h4>Input</h4>
+                <textarea id="input" class="field"></textarea>
+                <h4>Output</h4>
+                <textarea id="output" class="field"></textarea>
+                <h4>ICE candidates</h4>
+                <textarea id="candidates" class="field"></textarea>
+                <h4>Channel</h4>
+                <div id="channel">
+                </div>
+                <div>
+                    <form onsubmit="app.sendMessage(event)">
+                        <input type="text" id="message">
+                    </form>
+                </div>
+            </div>
+            <div class="side-col">
+                <video id="camera"></video>
+            </div>
+        </div>
+    </body>
+</html>

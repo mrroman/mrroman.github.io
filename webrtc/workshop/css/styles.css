@@ -1,0 +1,29 @@
+.field {
+    width: 90%;
+    height: 15em;
+}
+
+.eventbar {
+    color: red;
+}
+
+.container {
+    width: 100%;
+    margin:0;
+    padding:0;
+    clear: both;
+}
+
+.main-col {
+    width: 70%;
+    float: left;
+}
+
+.side-col {
+    width: 30%;
+    float: left;
+}
+
+#camera {
+    width: 100%;
+}

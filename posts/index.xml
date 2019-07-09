@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on mrroman&#39;s blog</title>
+    <link>https://mrroman.pl/posts/</link>
+    <description>Recent content in Posts on mrroman&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 13 Sep 2017 21:39:57 +0200</lastBuildDate>
+    
+	<atom:link href="https://mrroman.pl/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker Swarm</title>
+      <link>https://mrroman.pl/posts/docker-swarm/</link>
+      <pubDate>Wed, 13 Sep 2017 21:39:57 +0200</pubDate>
+      
+      <guid>https://mrroman.pl/posts/docker-swarm/</guid>
+      <description>Recently I was evaluating solution for creating Docker container cluster. I wanted to set up Kubernetes at first, but we wanted to make it as fast and simple as possible so we started evaluating Amazon Container Service. We stopped quite soon because it appears that it needs quite a lot of access rights (the most of an administrator rights). We didn&amp;rsquo;t have them so we began to look elsewhere.</description>
+    </item>
+    
+    <item>
+      <title>Demovibes</title>
+      <link>https://mrroman.pl/posts/demovibes/</link>
+      <pubDate>Wed, 23 Aug 2017 15:38:39 +0200</pubDate>
+      
+      <guid>https://mrroman.pl/posts/demovibes/</guid>
+      <description>I&amp;rsquo;m from the 80ties, so I raised in the age of demoscene. I like to watch demos and listen to the demoscene music. I don&amp;rsquo;t mind listening to Atari, C64, Amiga or PC music. I just like the style. That&amp;rsquo;s why I like demoscene music broadcasts like http://www.kohina.com/ or https://www.scenemusic.net/demovibes/. One of my favourites mixes of demoscene tracks is https://demovibes.org/. It allows you to get to know hours of demo tracks.</description>
+    </item>
+    
+    <item>
+      <title>My First Post</title>
+      <link>https://mrroman.pl/posts/my-first-post/</link>
+      <pubDate>Tue, 22 Aug 2017 14:06:00 +0200</pubDate>
+      
+      <guid>https://mrroman.pl/posts/my-first-post/</guid>
+      <description>Dear Reader
+This is my next attempt to create a blog about my interests and a bit about me. I will challange here my english language and fight with the topics that I&amp;rsquo;m keen on. There will be some articles about my old computers, different programming languages and software that I want or wanted to create :). I hope that it won&amp;rsquo;t be my last post. Keep your fingers crossed :).</description>
+    </item>
+    
+  </channel>
+</rss>

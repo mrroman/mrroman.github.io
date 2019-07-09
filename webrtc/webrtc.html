@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>WebRTC</title>
+<meta name="author" content="(Konrad Mrożek)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">WebRTC</h1>
+</section>
+
+<section>
+<section id="slide-org79dc15b">
+<h2 id="org79dc15b">General</h2>
+<ul>
+<li class="fragment appear"><p>
+Wikipedia:
+</p>
+<blockquote nil>
+<p>
+&#x2026;is a collection of communications protocols and application programming
+interfaces that enable real-time communication over peer-to-peer connections.
+</p>
+</blockquote></li>
+<li class="fragment appear">Developed by Google</li>
+<li class="fragment appear">Supports audio/video and data communication (chats)</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org48b949a">
+<h2 id="org48b949a">Concepts</h2>
+<ul>
+<li class="fragment appear"><p>
+<span class="underline">Peer to peer</span>
+</p>
+
+<p>
+Data transfer takes place only between two parties.
+</p></li>
+<li class="fragment appear"><p>
+<span class="underline">Signalling</span>
+</p>
+
+<p>
+Process of sending control information between the parties to determine communication protocols, channels, media codecs, etc.
+</p></li>
+
+</ul>
+</section>
+<section id="slide-org2376c23">
+<h3 id="org2376c23">Peer to peer</h3>
+<p>
+Interactive Connectivity Establishment (ICE)
+</p>
+<ul>
+<li>framework to allow browser to connect with peers</li>
+<li>needs to bypass firewalls</li>
+<li>relays connection through server if router doesn't allow direct connection</li>
+
+</ul>
+</section>
+<section id="slide-org94570b8">
+<h3 id="org94570b8">ICE</h3>
+<ul>
+<li class="fragment appear">Session Description Protocol
+<ul>
+<li>standard for describing the media content connection, resolution, formats, etc.</li>
+
+</ul></li>
+<li class="fragment appear">Session Traversal Utilities for NAT (STUN).
+<ul>
+<li>discover your public address and determine restrictions in your router</li>
+<li>not applicable with "Symetric NAT"</li>
+
+</ul></li>
+<li class="fragment appear">Traversal Using Relays around NAT (TURN)
+<ul>
+<li>bypass symetric NAT (both parties behind NAT)</li>
+<li>data is relayed by the TURN server</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org27710fb">
+<h2 id="org27710fb">Signalling channel</h2>
+<div class="outline-text-2" id="text-org27710fb">
+</div></section>
+<section id="slide-org9ae0889">
+<h3 id="org9ae0889">Protocol</h3>
+<ul>
+<li>Properitary protocol. Developer chooses or designs protocol</li>
+<li>Most common is SIP protocol (<a href="https://en.wikipedia.org/wiki/Session_Initiation_Protocol">https://en.wikipedia.org/wiki/Session_Initiation_Protocol</a>)</li>
+<li>Must allow to pass messages between peers:
+<ul>
+<li>offer</li>
+<li>answer</li>
+<li>ice-candidate</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org2c0740a">
+<h3 id="org2c0740a">Messages</h3>
+<ul>
+<li class="fragment appear"><span class="underline">offer</span> - Alice offers a call to Bob. It contains SDP message with the connection details.</li>
+<li class="fragment appear"><span class="underline">answer</span> - Bob answers Alice with his connection details (SDP)</li>
+<li class="fragment appear"><span class="underline">ice-candidate</span> - browser negotiates connection method by sending possible SDPs</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org5c70111">
+<h2 id="org5c70111">Communication</h2>
+<div class="outline-text-2" id="text-org5c70111">
+</div></section>
+<section id="slide-orgd274f20">
+<h3 id="orgd274f20">Keywords</h3>
+<ul>
+<li>lossy</li>
+<li>UDP based</li>
+<li>supports message and multimedia streams</li>
+
+</ul>
+</section>
+<section id="slide-org5631fc2">
+<h3 id="org5631fc2">Messages</h3>
+<ul>
+<li>message - text or binary</li>
+<li>uses SCTP (Stream Control Transmission Protocol) protocol</li>
+<li><span class="underline">watch for upper limit of size of message</span></li>
+
+</ul>
+</section>
+<section id="slide-orgee6817b">
+<h3 id="orgee6817b">Multimedia streams</h3>
+<ul>
+<li>video/audio (VP8)</li>
+<li>SRTP/RTCP protocol</li>
+<li>support content negotiation, quality changes, etc.</li>
+
+</ul>
+</section>
+<section id="slide-org3013580">
+<h3 id="org3013580">WebRTC gateways</h3>
+<ul>
+<li>connection between WebRTC and other VoIP technologies</li>
+<li>e.g. allows to call PSTN terminals</li>
+<li><a href="https://en.wikipedia.org/wiki/WebRTC_Gateway">https://en.wikipedia.org/wiki/WebRTC_Gateway</a></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org8aedb41">
+<h2 id="org8aedb41">Browser API</h2>
+<div class="outline-text-2" id="text-org8aedb41">
+</div></section>
+<section id="slide-orgb68cc0d">
+<h3 id="orgb68cc0d">Interfaces</h3>
+<ul>
+<li>WebRTC
+<ul>
+<li>RTCPeerConnection</li>
+<li>RTCConfiguration</li>
+<li>RTCDataChannel</li>
+<li>RTCSessionDescription (SDP)</li>
+
+</ul></li>
+<li>Multimedia
+<ul>
+<li>MediaDevices.getUserMedia()</li>
+<li>MediaStream</li>
+<li>MediaStreamTrack</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org20d118e">
+<h3 id="org20d118e">Create connection</h3>
+<div class="org-src-container">
+
+<pre><code class="javascript" >const peerConnection = new RTCPeerConnection(/* config object */);
+</code></pre>
+</div>
+</section>
+<section id="slide-orgd895096">
+<h3 id="orgd895096">Call offer</h3>
+<p>
+Application creates an offer of a connection, sets it as a local description
+and sends it with signalling to the target party.
+</p>
+<div class="org-src-container">
+
+<pre><code class="javascript" >peerConnection.createOffer()
+    .then(function(offer) {
+        return peerConnection.setLocalDescription(offer);
+    })
+    .then(function(offer) {
+        signalling(me: me,
+            target: whoAmICalling,
+            type: 'offer',
+            sdp: peerConnection.localDescription
+        });
+    })
+    .catch(function(error) {
+        //
+    });
+</code></pre>
+</div>
+</section>
+<section id="slide-org7b5e681">
+<h3 id="org7b5e681">Call answer</h3>
+<p>
+Application receives from signalling an offer, sets it as a remote description,
+creates an answer to the offer and sends to the caller.
+</p>
+<div class="org-src-container">
+
+<pre><code class="javascript" >function (offerMessage) {
+    peerConnection.setRemoteDescription(offerMessage.sdp)
+        .then(function() {
+            return peerConnection.createAnswer();
+        })
+        .then(function(answer) {
+            return peerConnection.setLocalDescription(answer);
+        })
+        .then(function() {
+            signaling({
+                name: me,
+                target: offerMessage.name,
+                type: 'answer',
+                sdp: peerConnection.localDescription
+            });
+        })
+        .catch(function(error) {
+            //
+        });
+}
+</code></pre>
+</div>
+</section>
+<section id="slide-org2f18a00">
+<h3 id="org2f18a00">Negotiating connection method</h3>
+<p>
+Application exchanges information about the network connections.
+</p>
+<div class="org-src-container">
+
+<pre><code class="javascript" >peerConnection.addEventListener('icecandidate', function(candidate) {
+    sendToServer({
+        target: theOtherParty,
+        type: 'new-ice-candidate',
+        candidate: candidate
+    });
+});
+
+function newIceCandidate(candidate) {
+    peerConnection.addIceCandidate(candidate)
+        .catch(function(error) {
+            //
+        });
+}
+</code></pre>
+</div>
+</section>
+<section id="slide-org169cbf2">
+<h3 id="org169cbf2">Workshop</h3>
+<p>
+<a href="./workshop/">Link</a>
+</p>
+</section>
+<section id="slide-org593132c">
+<h3 id="org593132c">Libraries</h3>
+<ul>
+<li><a href="https://github.com/feross/simple-peer">https://github.com/feross/simple-peer</a></li>
+<li><a href="http://peerjs.com/">http://peerjs.com/</a></li>
+
+</ul>
+</section>
+<section id="slide-org4e7734d">
+<h3 id="org4e7734d">Debugging</h3>
+<p>
+chrome://webrtc-internals
+</p>
+</section>
+</section>
+<section>
+<section id="slide-orgeeb521c">
+<h2 id="orgeeb521c">Security</h2>
+<div class="outline-text-2" id="text-orgeeb521c">
+</div></section>
+<section id="slide-org63cc80a">
+<h3 id="org63cc80a">Design</h3>
+<ul>
+<li>WebRTC is built to be secure</li>
+<li>Control channels are encrypted (DTLS)</li>
+<li>Media channels are encrypted (SRTP)</li>
+
+</ul>
+</section>
+<section id="slide-org47f91ae">
+<h3 id="org47f91ae">Weaknesses</h3>
+<ul>
+<li>Signalling (MiTM)</li>
+<li>ICE</li>
+<li>Media channels</li>
+<li>Browser (XSS, SOP)</li>
+
+</ul>
+</section>
+<section id="slide-org19814b8">
+<h3 id="org19814b8">Signalling</h3>
+<ul>
+<li>Unverified peer identity</li>
+<li>SIP protocol vulnerabilities</li>
+<li>Unencrypt communication</li>
+
+</ul>
+</section>
+<section id="slide-orgf22fbc0">
+<h3 id="orgf22fbc0">ICE</h3>
+<ul>
+<li>NAT hole punching</li>
+<li>IP Location privacy</li>
+
+</ul>
+</section>
+<section id="slide-orgfd1c677">
+<h3 id="orgfd1c677">Media channels</h3>
+<ul>
+<li>SRTP unencrypted headers</li>
+<li>SDES plain text keys and security parameters</li>
+
+</ul>
+</section>
+<section id="slide-orgf4e628c">
+<h3 id="orgf4e628c">Studies</h3>
+<ul>
+<li><a href="https://telecom.altanai.com/2015/04/24/webrtc-security/">https://telecom.altanai.com/2015/04/24/webrtc-security/</a></li>
+<li><a href="http://webrtc-security.github.io/">http://webrtc-security.github.io/</a></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgb0f763b">
+<h2 id="orgb0f763b">Applications</h2>
+<ul>
+<li><a href="https://appear.in/">https://appear.in/</a></li>
+<li><a href="https://webtorrent.io/">https://webtorrent.io/</a></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
